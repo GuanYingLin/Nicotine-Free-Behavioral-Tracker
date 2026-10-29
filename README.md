@@ -25,7 +25,7 @@
 
 ### 法律合規與非醫療性質聲明 (Legal & Non-Medical Disclaimer)
 1. **非醫療器材與非醫療行為聲明**：本專案（Nicotine Free）純屬「個人日常習慣追蹤、行為經濟學機會成本量化與資訊工程架構展示」之軟體作品。本系統不具備任何疾病診斷、治療、減輕或預防之醫療效能，亦非屬中華民國《醫療器材管理法》所定義之醫用軟體（SaMD），不涉及任何《藥事法》第 69 條所稱之醫療效能標示或宣傳。
-2. **量表引用之學術分群用途**：系統初始問卷所引用之國際開源文獻「芳斯頓習慣依賴度量表（FTND）」，於本專案中僅作為後端資料庫之「基線習慣強度分群標籤（Stratification Feature）」，旨在校正不同使用頻率群體之數據基準線，絕不構成臨床醫學診斷。
+2. **量表引用之學術分群用途**：系統初始問卷所引用之國際開源文獻「芳斯頓習慣依賴度量表（FTND）」，於本專案中僅作為後端資料庫之「基線習慣強度分群標籤（Stratification Feature）」之用，旨在校正不同使用頻率群體之數據基準線，絕不構成臨床醫學診斷。
 3. **無涉菸品與藥物推廣**：本專案嚴格遵守《菸害防制法》，系統內無任何菸品、類菸品或戒菸藥物之廣告、推薦與導購行為。若使用者有臨床戒菸或醫療諮詢需求，請洽詢專業醫療院所或國民健康署戒菸專線。
 
 ---
@@ -145,8 +145,8 @@ graph LR
 
 1. **總商務價值** $V_{\text{total}}$ （單位：新台幣）：
    $$V_{\text{total}} = \text{round}\left( N_{\text{saved}} \times \frac{P_{\text{pack}}}{20} + N_{\text{saved}} \times \frac{5}{60} \times W_{\text{hourly}}, \, 1 \right)$$
-   - **直接消費節省**： $N_{\text{saved}} \times \dfrac{P_{\text{pack}}}{20}$
-   - **時間機會成本產值**： $N_{\text{saved}} \times \dfrac{5}{60} \times W_{\text{hourly}}$
+   - **直接消費節省**：客觀計算 $N_{\text{saved}} \times \dfrac{P_{\text{pack}}}{20}$
+   - **時間機會成本產值**：精算 $N_{\text{saved}} \times \dfrac{5}{60} \times W_{\text{hourly}}$
 
 2. **具象化物資當量**（茶葉蛋指標 $E_{\text{egg}}$ ）：為消除貨幣數字之抽象感，系統以台灣超商常見物資「茶葉蛋（單價定錨為 NT$ 15 元）」作為購買力平價（PPP）轉換單位：
    $$E_{\text{egg}} = \text{round}\left( \frac{V_{\text{total}}}{15}, \, 0 \right)$$
