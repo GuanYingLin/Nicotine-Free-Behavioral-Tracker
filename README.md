@@ -133,15 +133,19 @@ $$\Delta T = \begin{cases} \left\lfloor \dfrac{\text{Unix}(T_{\text{relapse}}) -
 
 ### 3.3 多巴胺商務價值與時間機會成本模型
 
-本模型不僅計算直接貨幣支出，更導入經濟學之「時間機會成本（Time Opportunity Cost）」。設單包價格（20 根裝）為 $P_{\text{pack}}$，個人時薪為 $W_{\text{hourly}}$，並以每消費一根耗費 **5 分鐘（$\frac{5}{60}$ 小時）** 作為生命時間折算常數：
+本模型不僅計算直接貨幣支出，更導入經濟學之「時間機會成本（Time Opportunity Cost）」。設單包價格（20 根裝）為 $P_{\text{pack}}$，個人時薪為 $W_{\text{hourly}}$，並以每消費一根耗費 **5 分鐘（5/60 小時）** 作為生命時間折算常數：
 
-1. **總商務價值（$V_{\text{total}}$，單位：新台幣）**：
-   $$V_{\text{total}} = \text{round}\left( \underbrace{N_{\text{saved}} \times \frac{P_{\text{pack}}}{20}}_{\text{直接消費節省}} + \underbrace{N_{\text{saved}} \times \frac{5}{60} \times W_{\text{hourly}}}_{\text{時間機會成本產值}}, \, 1 \right)$$
+1. **總商務價值**（*V*<sub>total</sub>，單位：新台幣）：
 
-2. **具象化物資當量（茶葉蛋指標，$E_{\text{egg}}$）**：
-   為消除貨幣數字之抽象感，系統以台灣超商常見物資「茶葉蛋（單價定錨為 $\text{NT\$ } 15$ 元）」作為購買力平價（PPP）轉換單位：
-   $$E_{\text{egg}} = \text{round}\left( \frac{V_{\text{total}}}{15}, \, 0 \right)$$
+$$V_{\text{total}} = \text{round}\left( N_{\text{saved}} \times \frac{P_{\text{pack}}}{20} + N_{\text{saved}} \times \frac{5}{60} \times W_{\text{hourly}}, 1 \right)$$
 
+* 直接消費節省：
+  $$N_{\text{saved}} \times \frac{P_{\text{pack}}}{20}$$
+* 時間機會成本產值：
+  $$N_{\text{saved}} \times \frac{5}{60} \times W_{\text{hourly}}$$
+2. **具象化物資當量**（茶葉蛋指標，*E*<sub>egg</sub>）：為消除貨幣數字之抽象感，系統以台灣超商常見物資「茶葉蛋（單價定錨為 NT$ 15 元）」作為購買力平價（PPP）轉換單位：
+
+$$E_{\text{egg}} = \text{round}\left( \frac{V_{\text{total}}}{15}, 0 \right)$$
 ### 3.4 ESG 環境外部性折算模型（GRI 303 & GRI 305 對接）
 
 系統將個人微觀克制行為映射至宏觀環境外部性減免：
