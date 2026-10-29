@@ -121,9 +121,7 @@ graph LR
 當使用者產生消費衝動並點擊【SOS 我想抽】時，系統記錄求救時間 $T_{\text{SOS}}$ ；若後續仍點擊【破戒一根】（時間為 $T_{\text{relapse}}$ ），系統於 `Google Sheets [36]` 執行以下閉環狀態演繹：
 
 - **當 $T_{\text{SOS}} \neq \varnothing$（已觸發求救狀態）**：
-
-$$\Delta T = \left\lfloor \frac{\text{Unix}(T_{\text{relapse}}) - \text{Unix}(T_{\text{SOS}})}{60} \right\rfloor \quad (\text{mins})$$
-
+  $$\Delta T = \left\lfloor \frac{\text{Unix}(T_{\text{relapse}}) - \text{Unix}(T_{\text{SOS}})}{60} \right\rfloor \quad (\text{mins})$$
 - **當 $T_{\text{SOS}} = \varnothing$（未觸發求救狀態）**：系統直接寫入字串 `"未按SOS直接破戒"`。
 
 結算完成後，系統立即清空用戶主表之 $T_{\text{SOS}}$ 狀態（設為 $\varnothing$），確保每一次 $\Delta T$ 皆精確反映單一衝動回合之真實抵抗時長。
@@ -133,14 +131,11 @@ $$\Delta T = \left\lfloor \frac{\text{Unix}(T_{\text{relapse}}) - \text{Unix}(T_
 設使用者完成初始問卷之基準時間為 $T_0$ ，當前查詢時間為 $T_{\text{now}}$ ，問卷填報之日均消費根數為 $C_{\text{daily}}$ ，系統累計破戒次數為 $N_{\text{relapse}}$ ：
 
 1. **累計堅持總秒數** $\Delta t_{\text{sec}}$ ：
-
-$$\Delta t_{\text{sec}} = \text{Unix}(T_{\text{now}}) - \text{Unix}(T_0)$$
-
-$$\text{Hours} = \left\lfloor \frac{\Delta t_{\text{sec}}}{3600} \right\rfloor, \quad \text{Minutes} = \left\lfloor \frac{\Delta t_{\text{sec}} \bmod 3600}{60} \right\rfloor$$
+   $$\Delta t_{\text{sec}} = \text{Unix}(T_{\text{now}}) - \text{Unix}(T_0)$$
+   $$\text{Hours} = \left\lfloor \frac{\Delta t_{\text{sec}}}{3600} \right\rfloor, \quad \text{Minutes} = \left\lfloor \frac{\Delta t_{\text{sec}} \bmod 3600}{60} \right\rfloor$$
 
 2. **淨減量根數** $N_{\text{saved}}$ ：
-
-$$N_{\text{saved}} = \text{round}\left( C_{\text{daily}} \times \frac{\Delta t_{\text{sec}}}{86400} - N_{\text{relapse}} \right)$$
+   $$N_{\text{saved}} = \text{round}\left( C_{\text{daily}} \times \frac{\Delta t_{\text{sec}}}{86400} - N_{\text{relapse}} \right)$$
 
 - **行為經濟學透支防禦特性**：若使用者於短期內密集破戒，使得 $N_{\text{relapse}} > C_{\text{daily}} \times (\Delta t_{\text{sec}} / 86400)$ ，則 $N_{\text{saved}}$ 與後續財務指標將自動轉為**負值**。此設計直接觸發展望理論（Prospect Theory）中之「損失趨避（Loss Aversion）」心理機制，警示使用者當前消費頻率已超越歷史基線，形成動態煞車效應。
 
@@ -149,27 +144,22 @@ $$N_{\text{saved}} = \text{round}\left( C_{\text{daily}} \times \frac{\Delta t_{
 本模型不僅計算直接貨幣支出，更導入經濟學之「時間機會成本（Time Opportunity Cost）」。設單包價格（20 根裝）為 $P_{\text{pack}}$ ，個人時薪為 $W_{\text{hourly}}$ ，並以每消費一根耗費 **5 分鐘（5/60 小時）** 作為生命時間折算常數：
 
 1. **總商務價值** $V_{\text{total}}$ （單位：新台幣）：
-
-$$V_{\text{total}} = \text{round}\left( N_{\text{saved}} \times \frac{P_{\text{pack}}}{20} + N_{\text{saved}} \times \frac{5}{60} \times W_{\text{hourly}}, \, 1 \right)$$
-
-- **直接消費節省**： $N_{\text{saved}} \times \dfrac{P_{\text{pack}}}{20}$
-- **時間機會成本產值**： $N_{\text{saved}} \times \dfrac{5}{60} \times W_{\text{hourly}}$
+   $$V_{\text{total}} = \text{round}\left( N_{\text{saved}} \times \frac{P_{\text{pack}}}{20} + N_{\text{saved}} \times \frac{5}{60} \times W_{\text{hourly}}, \, 1 \right)$$
+   - **直接消費節省**： $N_{\text{saved}} \times \dfrac{P_{\text{pack}}}{20}$
+   - **時間機會成本產值**： $N_{\text{saved}} \times \dfrac{5}{60} \times W_{\text{hourly}}$
 
 2. **具象化物資當量**（茶葉蛋指標 $E_{\text{egg}}$ ）：為消除貨幣數字之抽象感，系統以台灣超商常見物資「茶葉蛋（單價定錨為 NT$ 15 元）」作為購買力平價（PPP）轉換單位：
-
-$$E_{\text{egg}} = \text{round}\left( \frac{V_{\text{total}}}{15}, \, 0 \right)$$
+   $$E_{\text{egg}} = \text{round}\left( \frac{V_{\text{total}}}{15}, \, 0 \right)$$
 
 ### 3.4 ESG 環境外部性折算模型（GRI 303 & GRI 305 對接）
 
 系統將個人微觀克制行為映射至宏觀環境外部性減免：
 
 1. **水體保全指標**（對接 GRI 303 水與放流水，單位：馬桶沖水次數 $W_{\text{flush}}$ ）：依據環境毒理學文獻，每減少 1 根廢棄濾嘴可避免 1,000 L 水體遭受化學物質污染；以單次省水馬桶沖水量 **6 L** 進行折算：
-
-$$W_{\text{flush}} = \text{round}\left( \frac{N_{\text{saved}} \times 1000}{6}, \, 0 \right)$$
+   $$W_{\text{flush}} = \text{round}\left( \frac{N_{\text{saved}} \times 1000}{6}, \, 0 \right)$$
 
 2. **碳排減免指標**（對接 GRI 305 排放，單位：超商塑膠袋當量 $C_{\text{bag}}$ ）：以單根全生命週期碳足跡 **14 g $\text{CO}_2\text{e}$**、單個超商購物塑膠袋製程碳排 **15 g $\text{CO}_2\text{e}$** 進行折算：
-
-$$C_{\text{bag}} = \text{round}\left( \frac{N_{\text{saved}} \times 14}{15}, \, 1 \right)$$
+   $$C_{\text{bag}} = \text{round}\left( \frac{N_{\text{saved}} \times 14}{15}, \, 1 \right)$$
 
 ---
 
@@ -205,7 +195,8 @@ $$C_{\text{bag}} = \text{round}\left( \frac{N_{\text{saved}} \times 14}{15}, \, 
 | **F (`5`)** | `Q4: 時薪` ( $W_{\text{hourly}}$ ) | `String` | 使用者問卷提交（如 `300元 (...)`） |
 | **G～L (`6`～`11`)** | `Q5～Q10: 習慣強度分群題組` | `String` | 使用者問卷提交之 6 項行為特徵參數 |
 | **M (`12`)** | `個資與數據處理同意` | `String` | 合規確認（`同意`） |
-| **N (`13`)** | `依賴程度` | `String` | Sheet 端 `ARRAYFORMULA` 自動演算（`輕度`/`中度`/`重度依賴`） |
+| **N (`13`)** | `成癮總分` | `Integer` | Sheet 端自動加總 G～L 欄積分 (0~10分) |
+| **O (`14`)** | `依賴程度` | `String` | Sheet 端 `ARRAYFORMULA` 自動演算（`輕度`/`中度`/`重度依賴`） |
 | **P (`15`)** | `破戒次數` ( $N_{\text{relapse}}$ ) | `Integer` | Make 分流 4 `GS [33]` 動態累加：`sum(ifempty(P; 0); 1)` |
 | **Q (`16`)** | `上次SOS時間` ( $T_{\text{SOS}}$ ) | `Datetime` | Make 分流 5 `GS [45]` 寫入；分流 4 `GS [33]` 讀取後清空 (`{{erase}}`) |
 | **R (`17`)** | `求救次數` ( $N_{\text{SOS}}$ ) | `Integer` | Make 分流 5 `GS [45]` 動態累加：`sum(ifempty(R; 0); 1)` |
@@ -236,7 +227,7 @@ $$C_{\text{bag}} = \text{round}\left( \frac{N_{\text{saved}} \times 14}{15}, \, 
 2. **破堤防禦留存率檢驗（AVE Retention Test）**：
    - 觀測使用者在發生首次破戒事件後，是否仍持續觸發【SOS 我想抽】與【查詢個人資產】事件，驗證「堅持時數不歸零」之回饋設計能否有效阻斷棄用行為（Churn Rate）。
 3. **跨分群干預敏感度分析（Stratified Sensitivity Analysis）**：
-   - 結合《用戶基本資料》N 欄之習慣強度標籤（輕度／中度／重度），透過單因子變異數分析（One-Way ANOVA）檢驗「多巴胺商務價值回饋」對不同基線強度群體之邊際干預效益差異。
+   - 結合《用戶基本資料》O 欄之習慣強度標籤（輕度／中度／重度），透過單因子變異數分析（One-Way ANOVA）檢驗「多巴胺商務價值回饋」對不同基線強度群體之邊際干預效益差異。
 
 ---
 
